@@ -51,6 +51,23 @@ CREATE TABLE approval (
     FOREIGN KEY (expense_id) REFERENCES expense(id) ON DELETE CASCADE,
     FOREIGN KEY (approved_by) REFERENCES users(id) ON DELETE CASCADE
 );
+
 INSERT INTO department (name) VALUES 
 ('HR'), ('Finance'), ('IT'), ('Marketing'), ('Sales')
 ON CONFLICT (name) DO NOTHING;
+
+--Basic Commands
+
+select * from users;
+select * from department;
+SELECT * FROM budget;
+select * from expense;
+
+SELECT * FROM expense WHERE status = 'PAID';
+SELECT id, email, department_id, role FROM users WHERE role = 'MANAGER';
+SELECT id, email, department_id, role FROM users WHERE role = 'EMPLOYEE';
+SELECT * FROM users WHERE role = 'FINANCE_TEAM';
+
+SELECT name, role FROM users WHERE username = 'finance@gmail.com';
+
+TRUNCATE TABLE users RESTART IDENTITY; -- this will delete all data and reset id
