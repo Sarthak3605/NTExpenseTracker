@@ -41,9 +41,7 @@ A role-based expense management system for organizations, allowing Employees to 
 -- This contains all the models , controllers, service, dto (Data Transfer Object), repository files...
 including the security files which manage the token and security measures, config which manage the rights to access
 
-### Frontend (HTML, CSS, JavaScript)
--- This contains all the HTML files of dashboards , CSS files to style the pages and JS files such as auth.js which controls the login and register page, manager.js and other files.
-
+### Use Postman or other software to test the backend and apis
 
 ## Setup Instructions
 -- First Step
@@ -59,11 +57,6 @@ Configure PostgreSQL in application.properties add username PostgreSQL link and 
 -- Run the backend using:
 
 ## mvn clean spring-boot:run --This is main command to run the backend at http://localhost:8080/
-
-Frontend Setup
-Open index.html in a browser or just go live (for VS Code users) this will run at http://localhost:5500/
-
-Ensure the backend is running for API calls
 
 ## API Endpoints
 -- Authentication
@@ -86,12 +79,3 @@ DELETE /manager/delete-expense/{id} → Manager deletes pending expenses
 POST /finance/add-department → Add a new department
 
 POST /finance/set-budget → Set budget for a department
-
--- Environment Variables
-Ensure you have the following environment variables set in application.properties:
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/expensetracker (here the databse name comes)
-spring.datasource.username=your_db_username
-spring.datasource.password=your_db_password
-spring.jpa.hibernate.ddl-auto=update
-jwt.secret=your_jwt_secret_key (secret key varies)
