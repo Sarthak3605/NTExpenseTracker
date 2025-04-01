@@ -1,0 +1,155 @@
+*{
+	padding:0;
+	margin:0;
+	box-sizing:border-box;
+  }
+  body{
+	width:100vw;
+	height:100vh;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	background-color: #f2cbd18c;
+  }
+  .container{
+	background-color:#f2f2f2;
+	border-radius:1rem;
+	box-shadow: 10px 10px 5px #ccebff;
+	width:35%;
+	height:auto;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:space-evenly;
+	animation: shadowmove 5s infinite alternate;
+  }
+  @keyframes shadowmove {
+	10% {
+	 box-shadow: -16px -15px 21px #ccebff;
+   }
+   30%{
+	 box-shadow: -16px 15px 21px #ccebff;
+   }
+   50% {
+	 box-shadow: 16px -15px 21px #ccebff;
+   }
+   80% {
+	 box-shadow: -17px 33px 16px #ccebff;
+   }
+
+   100% {
+	 box-shadow: 22px 21px 16px #ccebff;
+   }
+ }
+  h2{
+	font-family:Tahoma;
+	margin:10px;
+  }
+  form{
+	 position:relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap:10px;
+  }
+  .form-group{
+	width:100%;
+	display:flex;
+	align-items:center;
+	flex-direction:space-between;
+  }
+  label{
+	width:20%;
+	color:black;
+	font-weight:bold;
+	letter-spacing:1px;
+	margin-left:2rem;
+  }
+  #email,#password{
+  outline: none;
+	width:50%;
+	padding:.3rem .3rem;
+	border:none;
+	border-radius:5px;
+  }
+  .submitbtn{
+	width:20%;
+	margin:auto;
+	margin-top:5px;
+	margin-bottom:5px;
+	background-color:#cccccc;
+	border:none;
+	border-radius:1rem;
+	padding:.3rem .3rem;
+	font-family:verdana;
+	cursor:pointer;
+	transition:all .3s ease-in-out;
+  }
+  .submitbtn:hover{
+	color:white;
+	background-color:#333333;
+	transform:scale(1.1);
+  }
+  .error{
+	color:red;
+	margin-top:10px;
+	margin-bottom:10px;
+  }
+  a{
+	text-decoration:none;
+  }
+/*Media Queries*/
+@media (max-width: 1024px) {
+	.container {
+	  width: 50%;
+	}
+	label {
+	  width: 30%;
+	}
+	#email, #password {
+	  width: 60%;
+	}
+	.submitbtn {
+	  width: 30%;
+	}
+  }
+
+  @media (max-width: 768px) {
+	.container {
+	  width: 70%;
+	}
+	label {
+	  width: 35%;
+	  margin-left: 1rem;
+	}
+	#email, #password {
+	  width: 55%;
+	}
+	.submitbtn {
+	  width: 40%;
+	}
+  }
+
+  @media (max-width: 480px) {
+	.container {
+	  width: 90%;
+	  padding: 1rem;
+	}
+	h2 {
+	  font-size: 1.2rem;
+	}
+	.form-group {
+	  flex-direction: column;
+	  align-items: flex-start;
+	}
+	label {
+	  width: 100%;
+	  margin-left: 0;
+	}
+	#email, #password {
+	  width: 100%;
+	}
+	.submitbtn {
+	  width: 50%;
+	}
+  }

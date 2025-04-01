@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <link rel="stylesheet" href="css/finance.css">
+</head>
+<body>
+    <header>
+        <h1>Finance Team Dashboard</h1>
+      <button onclick="logout()" class="logoutbtn">Logout</button>
+  </header>
+
+  <div class="container">
+		<h2>Add New Department</h2>
+        <form id="addDepartmentForm">
+              <div class="form-group">
+          <label for="departmentName">Department</label>
+            <input type="text" id="departmentName" placeholder="Department Name" required>
+          </div>
+
+            <button class="submitbtn" type="submit">Add Department</button>
+        </form>
+        <h2>Manage Department Budgets</h2>
+        <form id="addBudgetForm">
+              <div class="form-group">
+                    <label for="departmentName">Name</label>
+                <input type="text" id="departmentName" placeholder="Department Name" required></div>
+              <div class="form-group">
+
+                    <label for="totalBudget">Total Budget</label>
+                <input type="number" id="totalBudget" placeholder="Total Budget" required></div>
+              <div class="form-group">
+
+                    <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" required></div>
+              <div class="form-group">
+
+                    <label for="endDate">End Date</label>
+                <input type="date" id="endDate" required></div>
+            <button type="submit" class="submitbtn">Add Budget</button>
+        </form>
+		<h2>Department Budget</h2>
+       <p class="remainingBudget">Remaining Budget: <span id="remainingBudget"></span></p>
+        <h2>Pending Payments</h2>
+        <table id="pendingPayments">
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Expense Name</th>
+                    <th>Amount</th>
+                    <th>Expense Type</th>
+                    <th>Expense Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+    <script src="js/finance.js"></script>
+</body>
+</html>
