@@ -34,58 +34,12 @@ A role-based expense management system for organizations, allowing Employees to 
 - **Logout functionality**
 - **Data validation & error handling**
 
-
-## Project Structure
-
-### Backend (Spring Boot - Java 17)
--- This contains all the models , controllers, service, dto (Data Transfer Object), repository files...
-including the security files which manage the token and security measures, config which manage the rights to access
-
-### Frontend (HTML, CSS, JavaScript)
--- This contains all the HTML files of dashboards , CSS files to style the pages and JS files such as auth.js which controls the login and register page, manager.js and other files.
-
-
 ## Setup Instructions
 -- First Step
 ### Clone the Repository
 
 git clone <URL of Repo>
 cd expense-tracker -- go to the project file
-
---Second Step
-### Backend Setup
-Configure PostgreSQL in application.properties add username PostgreSQL link and password or some important syntax
-
--- Run the backend using:
-
-## mvn clean spring-boot:run --This is main command to run the backend at http://localhost:8080/
-
-Frontend Setup
-Open index.html in a browser or just go live (for VS Code users) this will run at http://localhost:5500/
-
-Ensure the backend is running for API calls
-
-## API Endpoints
--- Authentication
-POST /auth/register → User Registration
-
-POST /auth/login → User Login
-
-POST /auth/logout → User Logout
-
--- Expense Management
-POST /employee/add-expense → Employee adds expense
-
-POST /manager/add → Manager adds expense
-
-POST /finance/approve-expense → Finance Team approves expense
-
-DELETE /manager/delete-expense/{id} → Manager deletes pending expenses
-
--- Budget & Department
-POST /finance/add-department → Add a new department
-
-POST /finance/set-budget → Set budget for a department
 
 -- Environment Variables
 Ensure you have the following environment variables set in application.properties:
