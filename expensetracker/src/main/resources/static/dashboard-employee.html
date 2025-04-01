@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <link rel="stylesheet" href="css/employee.css">
+</head>
+<body>
+  <header>
+
+        <h2>Employee Dashboard</h2>
+      <button onclick="logout()" class="logoutbtn">Logout</button>
+
+      </header>
+    <div class="container">
+        <form id="addExpenseForm">
+          <div class="form-group">
+          <label for="expenseName">Name</label>
+            <input type="text" id="expenseName" placeholder="Expense Name" required>
+          </div>
+          <div class="form-group">
+          <label for="amount">Amount</label>
+            <input type="number" id="amount" placeholder="Amount" required>
+          </div>
+          <div class="form-group">
+          <label for="expenseType">Expense Type</label>
+            <select id="expenseType">
+                <option value="ESSENTIAL">Essential</option>
+                <option value="DISCRETIONARY">Discretionary</option>
+                <option value="HYBRID">Hybrid</option>
+            </select>
+          </div>
+          <div class="form-group">
+          <label for="expenseDate">Date</label>
+            <input type="date" id="expenseDate" required>
+          </div>
+            <button type="submit" class="submitbtn">Submit Expense</button>
+        </form>
+        <h3>My Expenses</h3>
+        <table id="expenseTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+    <script src="js/employee.js"></script>
+</body>
+</html>
