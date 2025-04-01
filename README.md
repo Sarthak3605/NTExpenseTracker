@@ -41,26 +41,8 @@ A role-based expense management system for organizations, allowing Employees to 
 -- This contains all the models , controllers, service, dto (Data Transfer Object), repository files...
 including the security files which manage the token and security measures, config which manage the rights to access
 
-### Use Postman or other software to test the backend and apis
-
-## Setup Instructions
--- First Step
-### Clone the Repository
-
-git clone <URL of Repo>
-cd expense-tracker -- go to the project file
-
---Second Step
-### Backend Setup
-Configure PostgreSQL in application.properties add username PostgreSQL link and password or some important syntax
-
--- Run the backend using:
-
-## mvn clean spring-boot:run --This is main command to run the backend at http://localhost:8080/
-
 ### Frontend (HTML, CSS, JavaScript)
 -- This contains all the HTML files of dashboards , CSS files to style the pages and JS files such as auth.js which controls the login and register page, manager.js and other files.
-
 
 ## Setup Instructions
 -- First Step
