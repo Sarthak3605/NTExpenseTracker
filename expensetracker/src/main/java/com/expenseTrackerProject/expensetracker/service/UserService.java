@@ -4,6 +4,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import com.expenseTrackerProject.expensetracker.model.Department;
 import com.expenseTrackerProject.expensetracker.model.Role;
 import com.expenseTrackerProject.expensetracker.model.User;
@@ -11,8 +12,8 @@ import com.expenseTrackerProject.expensetracker.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
-@RequiredArgsConstructor
+@Service //mark as service
+@RequiredArgsConstructor //no need for argument constructors
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -29,7 +30,7 @@ public class UserService {
 //register the user with certain parameters
 
     public User registerUser(String name, String email, String password, Role role, Department department) {
-        if (!email.endsWith("@gmail.com")) {                                      /* I have to modify this to @NucleusTeq.com*/
+        if (!email.endsWith("@gmail.com")) {                  /* I have to modify this to @NucleusTeq.com */
             throw new RuntimeException("Only company email addresses are allowed.");
         }
         if (userRepository.findByEmail(email).isPresent()) {
