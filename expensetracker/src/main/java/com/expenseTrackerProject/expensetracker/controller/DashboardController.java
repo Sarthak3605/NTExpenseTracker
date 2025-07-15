@@ -37,7 +37,7 @@ public class DashboardController {
         return ResponseEntity.ok(expenseService.getApprovedExpensesForFinance());
     }
 
-	 /*   @PreAuthorize("hasRole('FINANCE_TEAM')")
+	/*   @PreAuthorize("hasRole('FINANCE_TEAM')")
     @PostMapping("/add")
     public ResponseEntity<?> addDepartment(@RequestBody Department department) {
         return ResponseEntity.ok(departmentService.addDepartment(department));
