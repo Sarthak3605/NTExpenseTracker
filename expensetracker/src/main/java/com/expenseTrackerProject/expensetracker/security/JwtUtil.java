@@ -1,11 +1,5 @@
 package com.expenseTrackerProject.expensetracker.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
-
 import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
@@ -14,17 +8,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
 @Component
 public class JwtUtil {
     private static final String SECRET_KEY = "X7gH9zL1pQwR5dT3mVbN8aK2YcFJ6MZSX7gH9zP1pQwR5dT3mVbN8aK2YcFJ6MZS"; //our key in property.application i store
 
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY); // Decode Base64 Key
-        return Keys.hmacShaKeyFor(keyBytes);
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY); //Converts the base64 (represent binary data) secret key to a real cryptographic key
+        return Keys.hmacShaKeyFor(keyBytes); //this require by jwt to sign and verify the user
     }
 
-    public String generateToken(String email,String role,String department) {
-		Map<String,Object> claims = new HashMap<>();
+    public String generateToken(String email,String role,String department) { //this generate the token and add the details
+		Map<String,Object> claims = new HashMap<>(); //claims are small pieces used to store info
 		claims.put("role",role);
         return Jwts.builder()
 		        .setClaims(claims)
@@ -39,6 +40,7 @@ public class JwtUtil {
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject); //extract the email
     }
+
 	public String extractDepartment(String token) {
 		Claims claims = extractAllClaims(token);
 		return claims.get("department", String.class); //extracts as a string type
@@ -54,13 +56,15 @@ public class JwtUtil {
 
     return Collections.emptyList();
 }
-private Claims extractAllClaims(String token) { // ✅ Fixed missing method
+
+private Claims extractAllClaims(String token) { //Fixed missing method
 	return Jwts.parserBuilder()
 			.setSigningKey(getSigningKey())
 			.build()
 			.parseClaimsJws(token)
 			.getBody();
 }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
