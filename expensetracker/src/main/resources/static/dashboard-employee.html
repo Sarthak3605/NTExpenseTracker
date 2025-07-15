@@ -10,11 +10,19 @@
   <header>
 
         <h2>Employee Dashboard</h2>
-      <button onclick="logout()" class="logoutbtn">Logout</button>
-
       </header>
+    <div class="sidebar">
+      <ul>
+        <li> <button onclick="showSection('form')">Add Expense</button> </li>
+        <li><button onclick="showSection('table')">View Expenses</button></li>
+    <li><button id="logoutbtn" onclick="logout()">Logout</button>
+      </ul></li>
+  </div>
+
     <div class="container">
+		<div id="formSection">
         <form id="addExpenseForm">
+			<h3>Add Expenses</h3>
           <div class="form-group">
           <label for="expenseName">Name</label>
             <input type="text" id="expenseName" placeholder="Expense Name" required>
@@ -37,6 +45,9 @@
           </div>
             <button type="submit" class="submitbtn">Submit Expense</button>
         </form>
+		</div>
+
+		<div id="tableSection">
         <h3>My Expenses</h3>
         <table id="expenseTable">
             <thead>
@@ -51,7 +62,7 @@
             </thead>
             <tbody></tbody>
         </table>
-
+</div>
     </div>
     <script src="js/employee.js"></script>
 </body>
