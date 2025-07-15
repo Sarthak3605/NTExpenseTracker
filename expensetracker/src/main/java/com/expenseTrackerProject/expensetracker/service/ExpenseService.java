@@ -36,6 +36,10 @@ public class ExpenseService {
         throw new RuntimeException("Expense Type cannot be null!");
     }
 
+    if (request.getAmount() == null || request.getAmount() <=1) {
+        throw new RuntimeException("Expense should be greater than 0");
+    }
+
     try {
         String expenseTypeString = request.getExpenseType().toString().toUpperCase();
         request.setExpenseType(ExpenseType.valueOf(expenseTypeString));
@@ -107,7 +111,7 @@ public class ExpenseService {
         User manager = getAuthenticatedUser();
 
         // Fetch expenses that are pending approval and belong to the manager's department
-        return expenseRepository.findByStatusAndUser_Department(ExpenseStatus.PENDING, manager.getDepartment());
+        return expenseRepository.findByUser(manager);
     }
 	public Expense getExpenseById(Long expenseId) {
 		return expenseRepository.findById(expenseId)
@@ -153,14 +157,33 @@ public class ExpenseService {
 	public Optional<User> findUserByEmail(String email){
 		return userRepository.findByEmail(email);
 	}
+
+
 	//to approve
 	public Expense approveExpense(Long expenseId) {
         Expense expense = expenseRepository.findById(expenseId)
                 .orElseThrow(() -> new RuntimeException("Expense not found"));
 
-        expense.setStatus(ExpenseStatus.APPROVED);
-        return expenseRepository.save(expense);
+          if (ExpenseStatus.APPROVED.equals(expense.getStatus())) {
+        throw new RuntimeException("Expense already approved");
     }
+
+    // Deduct budget here
+    Budget budget = budgetRepository.findByDepartment_Id(expense.getDepartment().getId())
+            .orElseThrow(() -> new RuntimeException("No budget found for department"));
+
+    if (budget.getRemainingBudget() < expense.getAmount()) {
+        throw new RuntimeException("Insufficient budget");
+    }
+
+    budget.setRemainingBudget(budget.getRemainingBudget() - expense.getAmount());
+    budgetRepository.save(budget);
+
+    expense.setStatus(ExpenseStatus.APPROVED);
+    return expenseRepository.save(expense);
+    }
+
+
  //to reject the expense
     public Expense rejectExpense(Long expenseId) {
         Expense expense = expenseRepository.findById(expenseId)
@@ -183,10 +206,26 @@ public class ExpenseService {
 	public List<Expense> getPendingExpenses() {
         return expenseRepository.findByStatus(ExpenseStatus.PENDING);
     }
+
 	//add expense by managers to finance team members
 	    public Expense addExpenseByManager(Expense expense) {
-        expense.setStatus(ExpenseStatus.PENDING); // Default status
-        return expenseRepository.save(expense);
+        User manager = getAuthenticatedUser();
+  if(expense.getAmount() == null || expense.getAmount() <= 1){
+	throw new RuntimeException("Expense should greater than 0");
+  }
+
+    if (manager.getDepartment() == null) {
+        throw new RuntimeException("Manager does not belong to a department");
+    }
+
+    expense.setDepartment(manager.getDepartment());
+    expense.setUser(manager); // Set the manager as the user who created the expense
+    expense.setStatus(ExpenseStatus.PENDING); // Default status
+    expense.setCreatedBy(manager.getName()); // Runtime only, not saved in DB
+
+    logger.info("Manager {} created an expense: {}", manager.getEmail(), expense.getExpenseName());
+
+    return expenseRepository.save(expense);
     }
 
 	//mark as paid for finance team dashboard
@@ -204,18 +243,6 @@ public class ExpenseService {
 			throw new RuntimeException("Only approved expenses can be marked as paid");
 		}
         User user = getAuthenticatedUser();
-
-        Budget budget = budgetRepository.findLatestBudgetByDepartment(user.getDepartment())
-                .orElseThrow(() -> {
-                    logger.error("No budget found for department: {}", user.getDepartment().getName());
-                    return new RuntimeException("No budget set for department: " + user.getDepartment().getName());
-                });
-
-        if (budget.getRemainingBudget() < expense.getAmount()) {
-			logger.warn("Warning: Insufficient budget, but marking the expense as paid anyway.");
-        }
-		budget.setRemainingBudget(budget.getRemainingBudget() - expense.getAmount());
-        budgetRepository.save(budget); // Update remaining budget
 
         expense.setStatus(ExpenseStatus.PAID);
         return expenseRepository.save(expense);
