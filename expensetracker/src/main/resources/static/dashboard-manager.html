@@ -10,9 +10,19 @@
 <body>
 <header>
     <h1>Manager Dashboard</h1>
-  	<button onclick="logout()" class="logoutbtn">Logout</button>
   </header>
+
+  <div class="sidebar">
+	<ul>
+	  <li> <button onclick="showSection('AddSection')">Add Expense</button> </li>
+	  <li> <button onclick="showSection('ApproveSection')">Approve Expense</button> </li>
+	  <li><button onclick="showSection('table')">View Expenses</button></li>
+  <li><button id="logoutbtn" onclick="logout()">Logout</button>
+	</ul></li>
+</div>
+
   <div class="container">
+	<div id="AddExpenseSection">
     <h2>Add Expense</h2>
 	<form id="addManagerExpenseForm">
     <div class="form-group">
@@ -37,7 +47,9 @@
     </div>
 		<button type="submit" class="submitbtn">Add Expense</button>
 	</form>
+	</div>
 
+<div id="ApproveExpenseSection">
     <h2>Approve Expenses</h2>
     <form id="approveExpenseForm">
       <div class="form-group">
@@ -54,7 +66,9 @@
 
         <button type="submit" class="submitbtn">Update Status</button>
     </form>
+	</div>
 
+	<div id="TableSection">
     <h2>Pending Expenses</h2>
     <table id="pendingExpensesTable">
         <thead>
@@ -71,6 +85,7 @@
         <tbody>
         </tbody>
     </table>
+	</div>
   </div>
 </body>
 </html>
