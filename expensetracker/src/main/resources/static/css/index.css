@@ -9,10 +9,11 @@
 	  display:flex;
 	  align-items:center;
 	  justify-content:center;
-	  background-color: #E9E6DD;
+	  background-color: #e6ccb2;
   }
   h1{
-	font-family: cursive;
+	color: #7f5539;
+	font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 	letter-spacing:2px;
   }
   .links{
@@ -27,7 +28,7 @@
   a{
 	cursor:pointer;
 	text-decoration:none;
-	color:#445D48;
+	color:#7f5539;
 	font-size:1.4rem;
 	transition: all .3s ease-in-out;
   }
