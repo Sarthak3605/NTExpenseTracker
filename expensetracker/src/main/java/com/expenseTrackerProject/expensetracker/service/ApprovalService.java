@@ -1,13 +1,17 @@
 package com.expenseTrackerProject.expensetracker.service;
 
-import com.expenseTrackerProject.expensetracker.model.*;
-import com.expenseTrackerProject.expensetracker.repository.ApprovalRepository;
-import com.expenseTrackerProject.expensetracker.repository.ExpenseRepository;
-import com.expenseTrackerProject.expensetracker.repository.UserRepository;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import com.expenseTrackerProject.expensetracker.model.Approval;
+import com.expenseTrackerProject.expensetracker.model.Expense;
+import com.expenseTrackerProject.expensetracker.model.ExpenseStatus;
+import com.expenseTrackerProject.expensetracker.model.User;
+import com.expenseTrackerProject.expensetracker.repository.ApprovalRepository;
+import com.expenseTrackerProject.expensetracker.repository.ExpenseRepository;
+import com.expenseTrackerProject.expensetracker.repository.UserRepository;
 
 @Service
 public class ApprovalService {
