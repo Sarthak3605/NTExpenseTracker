@@ -27,7 +27,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Bean //by this spring boot remember this as bean or component
+    @Bean //by this spring boot remember this as bean or component or ****basically register this as bean or component****
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
@@ -40,10 +40,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS configuration
-            .csrf(csrf -> csrf.disable())  // Disable CSRF
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers( "/auth/login", "/auth/register","/auth/**").permitAll()  // ✅ Allow login & register
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS configuration allows cross origin to share resource because frontend port != backend port
+            .csrf(csrf -> csrf.disable())  // Disable CSRF because we use JWT for authentication not any session or cookies or any state
+            .authorizeHttpRequests(auth -> auth //here we begin and authorize our endpoints
+                .requestMatchers( "/auth/login", "/auth/register","/auth/**").permitAll()  //Allow login & register
 
                 .requestMatchers("/dashboard/**").hasAnyAuthority("EMPLOYEE", "MANAGER", "FINANCE_TEAM")
                 .requestMatchers(HttpMethod.GET,"/dashboard/employee").hasAuthority("EMPLOYEE")
@@ -53,13 +53,13 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/expenses/pending").hasRole("MANAGER")
                 .requestMatchers("/expenses/{expenseId}/mark-paid").hasRole("FINANCE_TEAM")
 				.requestMatchers("/expenses/**").hasAnyRole("EMPLOYEE","MANAGER","FINANCE_TEAM")
-                .requestMatchers("/expenses/finance/**").hasRole("FINANCE_TEAM")  // ✅ Fixed role-based access
+                .requestMatchers("/expenses/finance/**").hasRole("FINANCE_TEAM")  //Fixed role-based access
 				.requestMatchers(HttpMethod.PUT,"/expenses/**").hasAnyRole("MANAGER","EMPLOYEE","FINANCE_TEAM")
 				.requestMatchers(HttpMethod.PUT,"/expenses/{expenseId}/update-status").hasAuthority("MANAGER")
 				.requestMatchers(HttpMethod.POST,"/expenses/add").hasAnyRole("EMPLOYEE","MANAGER")
 				.requestMatchers(HttpMethod.GET,"/expenses/my-expenses").hasRole("EMPLOYEE")
 				.requestMatchers("/expenses//delete/{expenseId}").hasRole("EMPLOYEE")
-				.requestMatchers(HttpMethod.PUT, "/expenses/**/mark-paid").hasAuthority("FINANCE_TEAM") // ✅ Correct Access
+				.requestMatchers(HttpMethod.PUT, "/expenses/**/mark-paid").hasAuthority("FINANCE_TEAM") // Correct Access
 
 				.requestMatchers("/finance/**").hasRole("FINANCE_TEAM")
 				.requestMatchers("/finance/remaining/**").hasRole("FINANCE_TEAM")
@@ -67,10 +67,10 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET,"/finance/pending-payments").hasRole("FINANCE_TEAM")
 				.requestMatchers("/departments/add").hasRole("FINANCE_TEAM")
 
-                .anyRequest().authenticated()  // Secure all other endpoints
+                .anyRequest().authenticated()  // Secure all other endpoints for security
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Set stateless session
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // Add JWT filter
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // Add JWT filter before hand
 
         return http.build();
     }
@@ -79,12 +79,12 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() { //for frontend purpose
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://127.0.0.1:5500"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); //allows requests from the frontend
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); //Registers the CORS settings for all endpoints
         return source;
     }
 }
