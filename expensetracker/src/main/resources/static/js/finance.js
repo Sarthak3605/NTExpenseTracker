@@ -1,6 +1,7 @@
 const FINANCE_API = "http://localhost:8080/finance";
 
 document.addEventListener("DOMContentLoaded", () => {
+	showSection("table"); //show table in starting
 	loadPendingPayments(); //load all payments
 	loadRemainingBudget(); //load the calculated remaining budgets
 
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
         //all the data we get
         const budgetData = {
-            departmentName: document.getElementById("departmentName").value,
+            departmentName: document.getElementById("budgetDepartmentName").value,
             totalBudget: parseFloat(document.getElementById("totalBudget").value),
             startDate: document.getElementById("startDate").value,
             endDate: document.getElementById("endDate").value
@@ -35,12 +36,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
             alert("Budget allocated!");
 			loadPendingPayments(); //load payments
+			loadRemainingBudget();
         }
 		else if(response.status === 403){
 			alert("Access denied!");
 		} else {
 			const error = await response.text();
-            alert(`Failed to allocate budget! ${error.message}`);
+            alert(`Failed to allocate budget! ${error}`);
         }
 
 	}catch(error){
@@ -99,16 +101,17 @@ function displayPendingPayments(payments) {
 
 		const userName = payment.user ? payment.user.name || "Unknown" : "Unknown";
 
-		let actionbtn = "";
-		if (payment.status === 'PENDING') {
-            if (payment.user && payment.user.role === 'EMPLOYEE') {
-                actionButtons = `<button class="submitbtn" onclick="markExpenseAsPaid(${payment.id})" class="btn btn-success">Mark as Paid</button>`;
-            } else if (payment.user && payment.user.role === 'MANAGER') {
-                actionButtons = `
-                    <button class="submitbtn" onclick="approveExpense(${payment.id})" class="btn btn-success">Approve</button>
-                    <button class="submitbtn" onclick="rejectExpense(${payment.id})" class="btn btn-danger">Reject</button>
-                `;
-            }
+		let actionButtons = "";
+
+		if (payment.status === 'APPROVED') {
+			const role = payment.user?.role || "";
+
+			actionButtons = role === 'MANAGER' ? `
+				<button onclick="approveExpense(${payment.id})" class="submitbtn  btn-success">Approve</button>
+				<button onclick="rejectExpense(${payment.id})" class="submitbtn  btn-danger">Reject</button>
+			` : role === 'EMPLOYEE' ? `
+				<button onclick="markExpenseAsPaid(${payment.id})" class="submitbtn  btn-success">Mark as Paid</button>
+			` : "";
 		}
 
 //fill the row with data
@@ -120,8 +123,8 @@ function displayPendingPayments(payments) {
             <td>${payment.expenseDate || 'N/A'}</td>
             <td>${payment.status || 'N/A'}</td>
             <td>
-                <button class="submitbtn" onclick="markExpenseAsPaid(${payment.id})" class="btn btn-success">Mark as Paid</button>
-            </td>
+			${actionButtons}
+			</td>
         `;
         tableBody.appendChild(row);
     });
@@ -232,24 +235,27 @@ async function markExpenseAsPaid(expenseId) {
 			alert(error.message);
 		});
 }
+
 //function to load remaining budget
 async function loadRemainingBudget() {
 	const token = localStorage.getItem("token");
-	//console.log("JWT Token Sent:", token);
+	console.log("JWT Token Sent:", token);
+
 
     if (!token) {
         console.error("Authorization token missing!");
         return;
     }
 	const payload = JSON.parse(atob(token.split(".")[1])); // Decodes the JWT payload
-    const department = payload.department; // Extract department
+	const rawDepartment = payload.department;
+	const department = rawDepartment.split(":")[0];
 
     if (!department) {
-        console.error("❌ Department not found in token!");
+        console.error("Department not found in token!");
         return;
     }
 
-    //console.log("✅ Extracted Department:", department);
+    console.log("Extracted Department:", department);
 
 
     try {
@@ -268,11 +274,12 @@ async function loadRemainingBudget() {
         }
 
 		const remainingBudget = await response.json();
-		//console.log(remainingBudget);
+		console.log(remainingBudget);
 
 		const budgetElement = document.getElementById("remainingBudget");
         if (budgetElement) {
-            budgetElement.textContent = `${remainingBudget}`;
+            budgetElement.textContent = `${remainingBudget.toFixed(2)}`;
+			console.log(remainingBudget);
         } else {
             console.error("Element with ID 'remainingBudget' not found!");
         }
@@ -280,11 +287,12 @@ async function loadRemainingBudget() {
         console.error("Error fetching remaining budget:", error);
     }
 }
+
  //when form submit
 document.getElementById("addDepartmentForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const departmentName = document.getElementById("departmentName").value;
+    const departmentName = document.getElementById("deptDepartmentName").value;
 
     if (!departmentName) {
         alert("Please enter a department name.");
@@ -317,6 +325,25 @@ document.getElementById("addDepartmentForm").addEventListener("submit", async fu
 });
 //fn for log out
 function logout() {
-    localStorage.removeItem("token");  // Remove JWT token
+    localStorage.clear();  // Remove JWT token
     window.location.href = "login.html";  // Redirect to login page
 }
+
+//fn to call the section as per the sidebar request to open
+function showSection(section) {
+	const DeptformSection = document.getElementById("DeptformSection");
+	const budgetSection = document.getElementById("BudgetformSection");
+	const tableSection = document.getElementById("tableSection");
+
+	DeptformSection.style.display = "none";
+	budgetSection.style.display = "none";
+	tableSection.style.display = "none";
+
+	if (section === "Deptform") {
+	  DeptformSection.style.display = "block";
+	} else if (section === "Budgetform") {
+	  budgetSection.style.display = "block";
+	} else if (section === "table") {
+	  tableSection.style.display = "block";
+	}
+  }
