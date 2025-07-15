@@ -10,7 +10,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
-
     // Add a new department
     public Department addDepartment(Department department) {
 		if (departmentRepository.existsByName(department.getName())) {
