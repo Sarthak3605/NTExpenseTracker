@@ -9,24 +9,35 @@
 <body>
     <header>
         <h1>Finance Team Dashboard</h1>
-      <button onclick="logout()" class="logoutbtn">Logout</button>
   </header>
+  <div class="sidebar">
+	<ul>
+	<li><button onclick="showSection('Deptform')">Add Department</button></li>
+<li><button onclick="showSection('Budgetform')">Add Budget</button></li>
+<li><button onclick="showSection('table')">View Payments</button></li>
+  <li><button id="logoutbtn" onclick="logout()">Logout</button>
+	</ul></li>
+</div>
 
   <div class="container">
-		<h2>Add New Department</h2>
+	<div id="DeptformSection">
+		<h1>Add New Department</h1>
         <form id="addDepartmentForm">
               <div class="form-group">
-          <label for="departmentName">Department</label>
-            <input type="text" id="departmentName" placeholder="Department Name" required>
+          <label for="deptDepartmentName">Department Name</label>
+            <input type="text" id="deptDepartmentName" placeholder="Department Name" required>
           </div>
 
             <button class="submitbtn" type="submit">Add Department</button>
         </form>
-        <h2>Manage Department Budgets</h2>
+</div>
+
+<div id="BudgetformSection" class="BudgetformSection">
+        <h1>Manage Department Budgets</h1>
         <form id="addBudgetForm">
               <div class="form-group">
-                    <label for="departmentName">Name</label>
-                <input type="text" id="departmentName" placeholder="Department Name" required></div>
+                    <label for="budgetDepartmentName">Department Name</label>
+                <input type="text" id="budgetDepartmentName" placeholder="Department Name" required></div>
               <div class="form-group">
 
                     <label for="totalBudget">Total Budget</label>
@@ -41,9 +52,13 @@
                 <input type="date" id="endDate" required></div>
             <button type="submit" class="submitbtn">Add Budget</button>
         </form>
-		<h2>Department Budget</h2>
-       <p class="remainingBudget">Remaining Budget: <span id="remainingBudget"></span></p>
-        <h2>Pending Payments</h2>
+		</div>
+
+
+
+		<div id="tableSection">
+		  <h1 class="remainingBudget">Remaining Budget: <span id="remainingBudget"></span></h1>
+        <h1>Pending Payments</h1>
         <table id="pendingPayments">
             <thead>
                 <tr>
@@ -58,6 +73,7 @@
             </thead>
             <tbody></tbody>
         </table>
+		</div>
 
     </div>
     <script src="js/finance.js"></script>
