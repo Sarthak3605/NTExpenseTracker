@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/auth";  // Update with actual backend URL
+const BASE_URL = "http://localhost:8080/auth";  // Base url for login and register
 
 document.addEventListener("DOMContentLoaded", () => { //it will call when page is loaded
 
@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => { //it will call when page i
             e.preventDefault();
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value.trim();
+
 			//console.log("Clicked on login, sending request...");
 			document.getElementById('errorMessage').innerText = "";
 
@@ -33,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => { //it will call when page i
 
                 localStorage.setItem("token", token);
        try{
-				const payload = JSON.parse(atob(token.split(".")[1]));
+				const payload = JSON.parse(atob(token.split(".")[1])); //get the user's dataa from jwt
 				//console.log("decoded jwt :",payload);
 
                 const role = Array.isArray(payload.authorities) ? payload.authorities.map(a => a.authority).join(",") : payload.role;
@@ -49,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => { //it will call when page i
                 redirectToDashboard(role);
 
             } catch (error){
-				showErrorMessage("Invalid token structure");
+				console.log("Invalid token structure");
             }}else{
 
 				setTimeout(function() {
