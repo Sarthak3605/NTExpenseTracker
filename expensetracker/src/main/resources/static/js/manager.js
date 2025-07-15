@@ -1,6 +1,7 @@
 const MANAGER_API = "http://localhost:8080/expenses";
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () { //this will call whenever the page is loaded
+	showSection("table"); //call table section so that on starting screen it will show table content
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -66,8 +67,8 @@ function loadPendingExpenses() {
                 <td>${expense.expenseDate || 'N/A'}</td>
                 <td id="status-${expense.id}">${expense.status || 'N/A'}</td>
                 <td>
-                    <button class="submitbtn" onclick="updateExpenseStatus(${expense.id}, 'APPROVED')">Approve</button>
-                    <button class="submitbtn" onclick="updateExpenseStatus(${expense.id}, 'REJECTED')">Reject</button>
+                    <button class="submitbtn btn-success" onclick="updateExpenseStatus(${expense.id}, 'APPROVED')">Approve</button>
+                    <button class="submitbtn btn-danger" onclick="updateExpenseStatus(${expense.id}, 'REJECTED')">Reject</button>
                 </td>
             `;
             tableBody.appendChild(row);
@@ -120,7 +121,7 @@ document.getElementById("addManagerExpenseForm").addEventListener("submit", asyn
     const expenseDate = document.getElementById("managerExpenseDate").value;
 	const departmentId= localStorage.getItem("departmentId")
 
-	const expenseData = {
+	const expenseData = { //we can also define directly here also
         expenseName: expenseName,
         amount: amount,
         expenseType: expenseType,
@@ -163,3 +164,26 @@ function logout() {
     localStorage.removeItem("token");  // Remove JWT token
     window.location.href = "login.html";  // Redirect to login page
 }
+
+//fn to call the section as per the sidebar request
+function showSection(section) {
+	const AddSection = document.getElementById("AddExpenseSection");
+	const ApproveSection = document.getElementById("ApproveExpenseSection");
+	const tableSection = document.getElementById("TableSection");
+
+	if (section === "AddSection") {
+		ApproveSection.style.display = "none";
+		AddSection.style.display = "block";
+	  tableSection.style.display = "none";
+	}
+	else if (section === "ApproveSection") {
+		ApproveSection.style.display = "block";
+		AddSection.style.display = "none";
+		tableSection.style.display = "none";
+	  }
+	else if (section === "table") {
+	AddSection.style.display = "none";
+	  ApproveSection.style.display = "none";
+	  tableSection.style.display = "block";
+	}
+  }
