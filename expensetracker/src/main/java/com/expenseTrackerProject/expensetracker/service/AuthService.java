@@ -1,20 +1,18 @@
 package com.expenseTrackerProject.expensetracker.service;
 
-import com.expenseTrackerProject.expensetracker.model.Department;
-import com.expenseTrackerProject.expensetracker.model.User;
-import com.expenseTrackerProject.expensetracker.repository.UserRepository;
-import com.expenseTrackerProject.expensetracker.security.JwtUtil;
-
-import lombok.RequiredArgsConstructor;
-
-import com.expenseTrackerProject.expensetracker.model.Role;
-
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.expenseTrackerProject.expensetracker.model.Department;
+import com.expenseTrackerProject.expensetracker.model.Role;
+import com.expenseTrackerProject.expensetracker.model.User;
+import com.expenseTrackerProject.expensetracker.repository.UserRepository;
+import com.expenseTrackerProject.expensetracker.security.JwtUtil;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +38,7 @@ public class AuthService {
 	}
 
 	public User registerUser(String name, String email, String password, Role role, Department department) {
+
         // Create a new user
         User user = new User();
         user.setName(name);
