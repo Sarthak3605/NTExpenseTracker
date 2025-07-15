@@ -1,31 +1,34 @@
 package com.expenseTrackerProject.expensetracker.controller;
 
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.expenseTrackerProject.expensetracker.dto.LoginRequest;
+import com.expenseTrackerProject.expensetracker.dto.UserRegistrationRequest;
 import com.expenseTrackerProject.expensetracker.model.Department;
 import com.expenseTrackerProject.expensetracker.model.Role;
 import com.expenseTrackerProject.expensetracker.model.User;
 import com.expenseTrackerProject.expensetracker.repository.DepartmentRepository;
 import com.expenseTrackerProject.expensetracker.repository.UserRepository;
+import com.expenseTrackerProject.expensetracker.security.JwtUtil;
 import com.expenseTrackerProject.expensetracker.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
-import com.expenseTrackerProject.expensetracker.dto.LoginRequest;
-import com.expenseTrackerProject.expensetracker.dto.UserRegistrationRequest;
-import com.expenseTrackerProject.expensetracker.security.JwtUtil;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 
-@CrossOrigin(origins = "*") //removes crossorigin errors for frontend part
+@CrossOrigin(origins = "*") //removes crossorigin errors for frontend part and allows for all origins
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor //reduce the code make it very readable and good
-public class AuthController {
+public class AuthController{
 
     private final UserRepository userRepository;
     private final AuthService authService;
