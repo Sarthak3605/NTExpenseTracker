@@ -18,4 +18,3 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
 	    // Corrected method declaration
 		Optional<Budget> findByDepartment_Id(Long departmentId);
 }
-
