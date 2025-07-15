@@ -1,6 +1,7 @@
 const EMPLOYEE_API = "http://localhost:8080/expenses";
 
 document.addEventListener("DOMContentLoaded", () => {
+	showSection("table");
 	loadExpenses(); //it will load expenses
 
     document.getElementById("addExpenseForm").addEventListener("submit", async (e) => {
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		//console.log("Submitting expense with token: ",token);
 
-
+       //fetch all the data here
 		const expenseName = document.getElementById("expenseName").value.trim();
         const amountInput = document.getElementById("amount").value.trim();
         const amount = amountInput ? parseFloat(amountInput) : NaN;
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			return;
 		}
 
-		const expenseData = {
+		const expenseData = { //we can directly fetch here also
             expenseName,
             amount,
             expenseType,
@@ -36,13 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
 				        // Debugging: Check input values in console
-						console.log("Expense Name:", expenseName);
-						console.log("Amount:", amountInput);
-						console.log("Parsed Amount:", amount);
-						console.log("Expense Type:", expenseType);
-						console.log("Expense Date:", expenseDate);
+						//console.log("Expense Name:", expenseName);
+						//console.log("Amount:", amountInput);
+						//console.log("Parsed Amount:", amount);
+						//console.log("Expense Type:", expenseType);
+						//console.log("Expense Date:", expenseDate);
 
-try{
+    try{
         const response = await fetch(`${EMPLOYEE_API}/add`, {
             method: "POST",
             headers: {
@@ -67,6 +68,7 @@ try{
 	}
     });
 });
+
  //fn to load expenses
 async function loadExpenses() {
     const token = localStorage.getItem("token");
@@ -92,7 +94,7 @@ async function loadExpenses() {
 		// Extract role from token (decode JWT)
 		const payload = JSON.parse(atob(token.split(".")[1]));
 		const userRole = payload.role;  // Get role from token
-		console.log("User Role:", userRole);
+		//console.log("User Role:", userRole);
 
 		//handle table for ui
         expenses.forEach(expense => {
@@ -105,7 +107,7 @@ async function loadExpenses() {
                 <td>${expense.status}</td>
       ${userRole === "EMPLOYEE" && expense.status === "PENDING" ?
                     `<td><button class="submitbtn" onclick="deleteExpense(${expense.id})">Delete</button></td>`
-                        : `<td></td>`
+                        : `<td><button disabled>Delete</button></td>`
                     }
                 `;
             });
@@ -143,7 +145,7 @@ async function deleteExpense(expenseId) {
             }
         });
 		const errorText = await response.text();
-        console.log("Server Response:", response.status, errorText); // 🔍 Debugging
+       // console.log("Server Response:", response.status, errorText);
 
 
         if (!response.ok) {
@@ -163,3 +165,17 @@ function logout() {
     localStorage.removeItem("token");  // Remove JWT token
     window.location.href = "login.html";  // Redirect to login page
 }
+
+//fn to show the section as per the button pressed from sidebar
+function showSection(section) {
+	const formSection = document.getElementById("formSection");
+	const tableSection = document.getElementById("tableSection");
+
+	if (section === "form") {
+	  formSection.style.display = "block";
+	  tableSection.style.display = "none";
+	} else if (section === "table") {
+	  formSection.style.display = "none";
+	  tableSection.style.display = "block";
+	}
+  }
