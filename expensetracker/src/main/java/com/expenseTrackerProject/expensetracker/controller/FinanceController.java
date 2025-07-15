@@ -34,5 +34,4 @@ public ResponseEntity<List<Expense>> getPendingPayments() {
     List<Expense> pendingPayments = expenseService.getPendingPayments();
     return ResponseEntity.ok(pendingPayments);
 }
-
 }
