@@ -42,7 +42,7 @@ public class ExpenseController {
 	private final UserRepository userRepository;
 
 //to add expenses
-     	@PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasRole('EMPLOYEE')")
     @PostMapping("/add")
      public ResponseEntity<?> addExpense(@RequestBody ExpenseRequest request) {
 
@@ -265,7 +265,7 @@ public ResponseEntity<?> markExpenseAsPaid(@PathVariable Long expenseId) {
 		}
 
 		Expense expense = expenseOpt.get();
-		expense.setStatus(ExpenseStatus.APPROVED);
+		expense.setStatus(ExpenseStatus.PAID);
 		expenseRepository.save(expense);
 
 		return ResponseEntity.ok("Expense approved successfully!");
